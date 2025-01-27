@@ -14,3 +14,19 @@ export async function createUser(user: User) {
     data: user,
   });
 }
+
+export async function getDoctors() {
+  return await db.user.findMany({
+    where: {
+      role: "DOCTOR",
+    },
+  });
+}
+
+export async function getUserByClerkId(clerkId: string) {
+  return await db.user.findUnique({
+    where: {
+      clerkId,
+    },
+  });
+}

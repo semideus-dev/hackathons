@@ -7,12 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  PATIENT
+  DOCTOR
+}
+
 model User {
-  id         String   @id @default(uuid())
-  clerkId    String   @unique
-  email      String   @unique
-  first_name String
-  last_name  String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now())
+  id           String        @id @default(uuid())
+  clerkId      String        @unique
+  email        String        @unique
+  first_name   String
+  last_name    String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now())
+  role         Role          @default(PATIENT)
+  appointments Appointment[]
+}
+
+model Appointment {
+  id        String   @id @default(uuid())
+  patientId String
+  date      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  remarks   String   @db.Text
+  patient   User     @relation(fields: [patientId], references: [id])
 }
